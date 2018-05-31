@@ -761,9 +761,12 @@ def detail(request, books_id):
 
     # 新品推荐
     books_li = Books.objects.get_books_by_type(type_id=books.type_id, limit=2, sort='new')
-
+    
+    # 商品种类
+    type_title = BOOKS_TYPE[books.type_id]
+    
     # 定义上下文
-    context = {'books': books, 'books_li': books_li}
+    context = {'books': books, 'books_li': books_li, 'type_title': type_title}
 
     # 使用模板
     return render(request, 'books/detail.html', context)
@@ -777,6 +780,11 @@ url(r'books/(?P<books_id>\d+)/$', views.detail, name='detail'), # 详情页
 
 将detail.html页面拷贝到templates/books下。
 然后将detail.html页面改写成django可以渲染的模板。
+
+```html
+#修改全部商品的下级标签种类
+<a href="#">{{ type_title }}</a>
+```
 
 ```html
 <h3>{{ books.name }}</h3>
